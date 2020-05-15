@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="images/github.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="apple-touch-icon" href="images/logo192.png" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <title>Lets Watch!</title>
+</head>
+
+<body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+</body>
+<script src="javascripts/jquery.min.js"></script>
+<script src="javascripts/popper.min.js"></script>
+<script src="javascripts/bootstrap.min.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+  function onYouTubeIframeAPIReady() {
+    var loadJS = function(url, location) {
+        var scriptTag = document.createElement('script');
+        scriptTag.src = url;
+
+        location.appendChild(scriptTag);
+    };
+    loadJS('javascripts/bundle.js', document.body);
+  }
+</script>
+
+</html>

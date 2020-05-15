@@ -1,0 +1,40 @@
+.play {
+	cursor: pointer;
+	width: 46px;
+	height: 36px;
+	opacity: 0.9;
+	display: inline-block;
+	background-color: transparent;
+	border: none;
+	outline: none;
+	padding: 0px;
+}
+
+.video-player-container {
+	position: relative;
+	width: 640px;
+	height: 390px;
+}
+
+.controls-container {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+}
+
+.progress-bar {
+	height: 5px;
+	background: rgba(255,255,255,.2);
+	cursor: pointer;
+}
+
+.play-path {
+	fill: #fff;
+}
+
+.shadow {
+    stroke: #000;
+    stroke-opacity: .15;
+    stroke-width: 2px;
+    fill: none;
+}

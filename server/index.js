@@ -21,7 +21,7 @@ function randomStr(len) {
     for (var i = len; i > 0; i--) { 
         ans += arr[Math.floor(Math.random() * arr.length)];
     } 
-    return ans; 
+    return ans;
 }
 
 if(mode == "development"){
@@ -115,6 +115,10 @@ io.on('connection', (socket) => {
 
 	socket.on('playVideoForAll', (payload) => {
 		io.in(payload.room).emit('playVideo', {});
+	});
+
+	socket.on('stopVideoForAll', (payload) => {
+		io.in(payload.room).emit('stopVideo', {});
 	});
 
 	socket.on('createRoom', () => {

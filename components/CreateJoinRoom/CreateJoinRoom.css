@@ -1,3 +1,94 @@
-.create-join .card {
-	cursor: pointer;
+.join-create-container {
+	display: grid;
+	height: calc(100% - 64px);
+	grid-template-columns: 100%;
+	grid-template-rows: 50% 50%;
+	background-color: #01f7bd;
+
+	transition: background-color 0.15s;
+}
+
+.join-create-container.dark {
+	background-color: #077B5F;
+}
+
+.room-form .txtbox {
+	width: 0px;
+	transform: scaleX(0.001);
+	display: block;
+    padding: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.room-form.show .txtbox{
+	width: 250px;
+    padding: .375rem .75rem;
+	transform: scaleX(1);
+}
+
+.button-container {
+	justify-self: center;
+	align-self: center;
+	display: flex;
+	width: 250px;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.img-container {
+	position: relative;
+	justify-self: center;
+	align-self: end;
+	height: inherit;
+}
+
+.overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+
+	transition: background-color 0.15s;
+}
+
+.overlay.show {
+	background-color: #000;
+	opacity: 0.5;
+}
+
+.btn {
+	display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out, transform 0.2s ease-in-out;
+    cursor: pointer;
+
+    background-color: #f72e01;
+    color: #fff;
+}
+
+.btn:hover {
+	transform: translate(0, 2px);
+}
+
+.img-gif {
+	height: 100%;
+	width: 100%;
 }

@@ -6,7 +6,8 @@ export default class VideoPlayer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            videoId: '_d2kwQYU6Pc'
+            videoId: '_d2kwQYU6Pc',
+            isVideoPlaying: false
         };
     }
 
@@ -32,12 +33,26 @@ export default class VideoPlayer extends React.Component {
         // event.target.playVideo();
     }
 
-    onPlayClick = () => {
-        this.props.onPlayVideo();
-    }
-
     playVideo = () => {
         this.player.playVideo();
+    }
+
+    stopVideo = () => {
+        this.player.pauseVideo();
+    }
+
+    onPlay = () => {
+        if (!this.state.isVideoPlaying) {
+            this.props.onPlayVideo();
+            this.setState({
+                isVideoPlaying: true
+            });
+        } else {
+            this.props.onStopVideo();
+            this.setState({
+                isVideoPlaying: false
+            });
+        }
     }
 
     render() {
@@ -48,7 +63,7 @@ export default class VideoPlayer extends React.Component {
                 <div className="controls-container">
                     <div className="progress-bar"></div>
                     <div className="controls">
-                        <button className="play">
+                        <button onClick={this.onPlay} className="play">
                             <svg height="100%" version="1.1" viewBox="0 0 36 36" width="100%">
                                 <use className="shadow"></use>
                                 <path className="play-path" d="M 12,26 18.5,22 18.5,14 12,10 z M 18.5,22 25,18 25,18 18.5,14 z" id="ytp-id-56"></path>

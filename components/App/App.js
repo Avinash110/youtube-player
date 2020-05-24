@@ -23,6 +23,7 @@ const eventToFunctionMapping = [
     { 'event': 'userJoined', 'function': 'onUserJoined' },
     { 'event': 'userTyping', 'function': 'userTyping' },
     { 'event': 'playVideo', 'function': 'playVideo' },
+    { 'event': 'stopVideo', 'function': 'stopVideo' },
     { 'event': 'setRoom', 'function': 'setRoom' }
 ];
 
@@ -36,7 +37,7 @@ export default class App extends React.Component {
             users: [],
             user: '',
             userTyping: '',
-            room: 'abc'
+            room: ''
         };
 
         this.socket = io(location.origin);
@@ -60,6 +61,16 @@ export default class App extends React.Component {
         this.socket.emit('playVideoForAll', {
             room: this.state.room
         });
+    }
+
+    stopVideoForAll = () => {
+        this.socket.emit('stopVideoForAll', {
+            room: this.state.room
+        });
+    }
+
+    stopVideo = () => {
+        this.refs["videoPlayer"].stopVideo();
     }
 
     playVideo = () => {
@@ -126,6 +137,7 @@ export default class App extends React.Component {
                         <VideoPlayer 
                             {...this.state}
                             onPlayVideo={this.playVideoForAll}
+                            onStopVideo={this.stopVideoForAll}
                             ref={"videoPlayer"}
                         />
                     </div>

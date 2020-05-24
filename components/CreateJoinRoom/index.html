@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lets Watch!</title>
+	<style type="text/css">
+		html, body {
+			height: 100%;
+			width: 100%;
+			margin : 0;
+			font-family: "Roboto", sans-serif;
+		}
+
+		.container {
+			display: grid;
+			height: 100%;
+			grid-template-columns: 100%;
+			grid-template-rows: 50% 50%;
+			/*background-color: #01f7bd;*/
+			background-color: #077B5F;
+		}
+
+		.button-container {
+			justify-self: center;
+			align-self: center;
+		}
+
+		.img-container {
+			position: relative;
+			justify-self: center;
+			align-self: end;
+		}
+
+		.overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+		}
+
+		.btn {
+			display: inline-block;
+		    font-weight: 400;
+		    text-align: center;
+		    white-space: nowrap;
+		    vertical-align: middle;
+		    -webkit-user-select: none;
+		    -moz-user-select: none;
+		    -ms-user-select: none;
+		    user-select: none;
+		    border: 1px solid transparent;
+		    padding: .375rem .75rem;
+		    font-size: 1rem;
+		    line-height: 1.5;
+		    border-radius: .25rem;
+		    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out, transform 0.2s ease-in-out;
+		    cursor: pointer;
+
+		    background-color: #f72e01;
+		    color: #fff;
+		}
+
+		.btn:hover {
+			transform: translate(0, 2px);
+		}
+
+		.overlay {
+			background-color: #000;
+			opacity: 0.5;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="button-container">
+			<button type="button" class="btn" value="Create Room">Create Room</button>
+			<button type="button" class="btn"v alue="Join Room">Join Room</button>
+		</div>
+		<div class="img-container">
+			<div class="overlay"></div>
+			<img src="giphy.gif" />
+		</div>
+	</div>
+</body>
+</html>

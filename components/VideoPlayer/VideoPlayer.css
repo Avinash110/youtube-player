@@ -1,4 +1,4 @@
-.play {
+.controls .play {
 	cursor: pointer;
 	width: 46px;
 	height: 36px;
@@ -28,7 +28,7 @@
 	cursor: pointer;
 }
 
-.play-path {
+.controls-play-path {
 	fill: #fff;
 }
 

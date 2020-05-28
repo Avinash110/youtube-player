@@ -35,23 +35,23 @@ export default class VideoPlayer extends React.Component {
 
     playVideo = () => {
         this.player.playVideo();
+        this.setState({
+            isVideoPlaying: true
+        });
     }
 
     stopVideo = () => {
         this.player.pauseVideo();
+        this.setState({
+            isVideoPlaying: false
+        });
     }
 
     onPlay = () => {
         if (!this.state.isVideoPlaying) {
             this.props.onPlayVideo();
-            this.setState({
-                isVideoPlaying: true
-            });
         } else {
             this.props.onStopVideo();
-            this.setState({
-                isVideoPlaying: false
-            });
         }
     }
 

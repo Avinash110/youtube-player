@@ -23,7 +23,7 @@
     "voca": "^1.4.0"
   },
   "scripts": {
-    "start": "export NODE_ENV=\"development\" && node server/index.js",
+    "start": "export NODE_ENV=\"production\" && node server/index.js",
     "build": "webpack -p --config webpack.prod.js"
   },
   "eslintConfig": {

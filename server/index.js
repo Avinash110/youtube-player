@@ -12,6 +12,7 @@ var sharedsession = require("express-socket.io-session");
 const names = ["Bat", "Cat", "Dat"];
 
 const roomToUserMapping = {};
+const roomToVideoDurationMapping = {};
 
 const getRandomName = () => names[Math.floor(Math.random() * names.length)];
 
@@ -69,9 +70,7 @@ io.on('connection', (socket) => {
 				}
 			}
 		});
-
 		socket.disconnect();
-
 	});
 
 	socket.on('messageAdded', (payload) => {
@@ -95,6 +94,7 @@ io.on('connection', (socket) => {
 			roomToUserMapping[payload.room].push(newUser);
 			socket.emit('setRoom', {
 				room: payload.room,
+				isAdmin: false,
 				users: roomToUserMapping[payload.room]
 			});
 			io.in(payload.room).emit('userJoined', roomToUserMapping[payload.room]);
@@ -114,11 +114,15 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('playVideoForAll', (payload) => {
-		io.in(payload.room).emit('playVideo', {});
+		io.in(payload.room).emit('playVideo', {seekDuration: payload.seekDuration});
 	});
 
 	socket.on('stopVideoForAll', (payload) => {
 		io.in(payload.room).emit('stopVideo', {});
+	});
+
+	socket.on('setVideoDuration', (payload) => {
+		roomToVideoDurationMapping[payload.room] = payload.time
 	});
 
 	socket.on('createRoom', () => {
@@ -134,6 +138,7 @@ io.on('connection', (socket) => {
 
 		socket.emit('setRoom', {
 			room: room,
+			isAdmin: true,
 			users: roomToUserMapping[room]
 		});
 	});

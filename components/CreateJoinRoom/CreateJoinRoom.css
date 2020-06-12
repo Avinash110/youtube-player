@@ -1,6 +1,6 @@
 .join-create-container {
 	display: grid;
-	height: calc(100% - 64px);
+	height: calc(100% - 58px);
 	grid-template-columns: 100%;
 	grid-template-rows: 50% 50%;
 	background-color: #01f7bd;
@@ -90,5 +90,5 @@
 
 .img-gif {
 	height: 100%;
-	width: 100%;
+	width: 400px;
 }

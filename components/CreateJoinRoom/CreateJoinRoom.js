@@ -22,9 +22,7 @@ export default class CreateJoinRoom extends React.Component {
 
 	onSubmit = (event) => {
 		event.preventDefault();
-		this.props.emit('userJoined', {
-			room: this.refs.roomid.value.trim()
-		});
+		this.props.joinUserToRoom(this.refs.roomid.value.trim());
 
 		this.refs.roomid.value = "";
 	}
@@ -40,7 +38,7 @@ export default class CreateJoinRoom extends React.Component {
 			<div className={"join-create-container" + (this.state.showJoinView ? " dark" : "")}>
 					<div className="button-container">
 						<button onClick={this.onCreateRoom} style={{display: this.state.showJoinView ? "none" : "block"}} type="button" className="btn" value="Create Room">Create Room</button>
-						<button style={{display: this.state.showJoinView ? "none" : "block"}} onClick={this.onJoinRoom} type="button" className="btn"v alue="Join Room">Join Room</button>
+						<button style={{display: this.state.showJoinView ? "none" : "block"}} onClick={this.onJoinRoom} type="button" className="btn" value="Join Room">Join Room</button>
 						<form onSubmit={this.onSubmit} className={"room-form" + (this.state.showJoinView ? " show" : "")}>
 							<input ref="roomid" placeholder="Enter Room ID" type="text" className="txtbox" />
 						</form>

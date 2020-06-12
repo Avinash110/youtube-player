@@ -37,7 +37,8 @@ export default class App extends React.Component {
             users: [],
             user: '',
             userTyping: '',
-            room: ''
+            room: '',
+            isAdmin: false
         };
 
         this.socket = io(location.origin);
@@ -52,14 +53,14 @@ export default class App extends React.Component {
     }
 
     setRoom = (payload) => {
-        this.setState({room: payload.room});
+        this.setState({room: payload.room, isAdmin: payload.isAdmin});
         this.onUserJoined(payload.users);
-
     }
 
-    playVideoForAll = () => {
+    playVideoForAll = (seekDuration) => {
         this.socket.emit('playVideoForAll', {
-            room: this.state.room
+            room: this.state.room,
+            seekDuration
         });
     }
 
@@ -73,8 +74,8 @@ export default class App extends React.Component {
         this.refs["videoPlayer"].stopVideo();
     }
 
-    playVideo = () => {
-        this.refs["videoPlayer"].playVideo();
+    playVideo = (payload) => {
+        this.refs["videoPlayer"].playVideo({seekDuration: payload.seekDuration});
     }
 
     userTyping = (payload) => {
@@ -90,7 +91,19 @@ export default class App extends React.Component {
     }
 
     connect = () => {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const id = urlParams.get("id");
+        if(id){
+            this.joinUserToRoom(id);
+        }
         this.setState({ status: "Connected" });
+    }
+
+    joinUserToRoom = (room) => {
+        this.emit('userJoined', {
+            room: room
+        });
     }
 
     disconnect = (users) => {
@@ -103,6 +116,13 @@ export default class App extends React.Component {
 
     setUser = (user) => {
         this.setState({ user: user });
+    }
+
+    setVideoDuration = (ct) => {
+        this.emit('setVideoDuration', {
+            time: ct,
+            room: this.state.room
+        });
     }
 
     render() {
@@ -121,26 +141,22 @@ export default class App extends React.Component {
                 <NavBar 
                     theme={this.state.theme}
                     onThemeChange={this.handleChangeTheme}
+                    room={this.state.room}
+                    users={this.state.users}
                 />
             {
                 !this.state.room ? <CreateOrJoinRoom
                     emit={this.emit}
+                    joinUserToRoom={this.joinUserToRoom}
                 /> : 
-                <div className="row">
-                    <div className="col-md-4 offset-md-1">
-                        {this.state.room}
-                        <UserList 
-                            {...this.state}
-                        />
-                    </div>
-                    <div className="col-md-6">
-                        <VideoPlayer 
-                            {...this.state}
-                            onPlayVideo={this.playVideoForAll}
-                            onStopVideo={this.stopVideoForAll}
-                            ref={"videoPlayer"}
-                        />
-                    </div>
+                <div className="app-container">
+                    <VideoPlayer 
+                        {...this.state}
+                        onPlayVideo={this.playVideoForAll}
+                        onStopVideo={this.stopVideoForAll}
+                        ref={"videoPlayer"}
+                        setVideoDuration={this.setVideoDuration}
+                    />
                 </div>
             }
             </ThemeProvider>

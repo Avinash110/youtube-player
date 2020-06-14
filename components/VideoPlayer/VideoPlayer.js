@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './VideoPlayer.css';
 import * as d3 from "d3";
 import _ from "underscore";
-import { Slider } from 'antd';
+import { List, Avatar, Button, Skeleton, Slider } from 'antd';
 import 'antd/dist/antd.css';
 import {
   CaretRightOutlined,
@@ -12,6 +12,7 @@ import {
   FullscreenExitOutlined,
   SoundOutlined
 } from '@ant-design/icons';
+import Video from "./Video.js";
 
 export default class VideoPlayer extends React.Component {
     constructor(props) {
@@ -53,11 +54,8 @@ export default class VideoPlayer extends React.Component {
     }
 
     onStateChange = (event) => {
-        if(event.data == 1 && this.state.hasStarted == false){
-            this.setState({
-                hasStarted: true
-            });
-            this.props.onPlayVideo();
+        if(event.data == -1 && this.state.hasStarted == true){
+            this.playVideo({});
         }
     }
 
@@ -67,7 +65,7 @@ export default class VideoPlayer extends React.Component {
         var myScale = d3.scaleLinear()
                       .domain([coord.x, coord.x + coord.width])
                       .range([0, videoDuration]);
-        event.target.setVolume(100);
+        // event.target.setVolume(100);
         this.player.cueVideoById({videoId: this.state.videoId});
         this.setState({
             videoDuration: videoDuration,
@@ -85,7 +83,6 @@ export default class VideoPlayer extends React.Component {
             isVideoPlaying: true,
             hasStarted: true
         });
-        console.log('Play Video has been called');
 
         this.videoSetDuration = window.setInterval(() => {
             this.setVideoDuration()
@@ -104,11 +101,9 @@ export default class VideoPlayer extends React.Component {
             this.props.setVideoDuration(ct);
         }
 
-        console.log('Video loaded fraction : ', this.player.getVideoLoadedFraction());
-        console.log('Player State : ', this.player.getPlayerState());
     }
 
-    stopVideo = () => {
+    pauseVideo = () => {
         this.player.pauseVideo();
         this.setState({
             isVideoPlaying: false
@@ -217,6 +212,12 @@ export default class VideoPlayer extends React.Component {
         });
     }
 
+    onVideoClick = (id) => {
+
+        this.player.cueVideoById({videoId: id});
+
+    }
+
     render() {
         const buttonColor = "#ddd";
 
@@ -260,6 +261,18 @@ export default class VideoPlayer extends React.Component {
                             </div>
                         </div>
                     </div> : null}
+                {this.props.searchVideos.length ? <List
+                    className="demo-loadmore-list"
+                    // loading={initLoading}
+                    itemLayout="horizontal"
+                    // loadMore={loadMore}
+                    dataSource={this.props.searchVideos}
+                    renderItem={item => (
+                      <List.Item>
+                        <Video onVideoClick={this.onVideoClick} data={item}></Video>
+                      </List.Item>
+                    )}
+                  /> : null}
             </div>
         );
     }

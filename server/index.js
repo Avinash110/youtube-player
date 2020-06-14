@@ -80,7 +80,7 @@ io.on('connection', (socket) => {
 			user: payload.user
 		};
 
-		io.emit('messageAdded', newMessage);
+		io.in(payload.room).emit('messageAdded', newMessage);
 	});
 
 	socket.on('userJoined', (payload) => {
@@ -110,7 +110,7 @@ io.on('connection', (socket) => {
 			user: payload.name
 		};
 
-		socket.broadcast.to(room).emit('userTyping', typingUser);
+		socket.broadcast.to(payload.room).emit('userTyping', typingUser);
 	});
 
 	socket.on('playVideoForAll', (payload) => {
@@ -123,6 +123,20 @@ io.on('connection', (socket) => {
 
 	socket.on('setVideoDuration', (payload) => {
 		roomToVideoDurationMapping[payload.room] = payload.time
+	});
+
+	socket.on('setUserName', (payload) => {
+
+		Object.keys(socketRooms).forEach( function(element, index) {
+			if(roomToUserMapping[element]){
+				for(var i=0; i < roomToUserMapping[element].length; i++){
+					if(roomToUserMapping[element][i].id == socket.id){
+						roomToUserMapping[element][i].name = payload.name;
+						io.in(element).emit("userJoined", roomToUserMapping[element]);
+					}
+				}
+			}
+		});
 	});
 
 	socket.on('createRoom', () => {

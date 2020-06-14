@@ -11,7 +11,7 @@ export default class MessageList extends React.Component {
   }
   render() {
     return ( 
-    	<div className="card card-body bg-light message-list">
+    	<div className="card card-body message-list">
     		{
     			this.props.messages.map((m, i) => {
     				return <Message message={m} key={i}></Message>

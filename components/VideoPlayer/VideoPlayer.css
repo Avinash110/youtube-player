@@ -94,3 +94,14 @@
     stroke-width: 2px;
     fill: none;
 }
+
+.video-list-container{
+	display: grid;
+	height: 600px;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 1fr)
+}
+
+.video-div {
+	background-repeat: no-repeat;
+}

@@ -14,7 +14,8 @@ export default class MessageForm extends React.Component {
 	this.props.emit('messageAdded', {
 		timeStamp: Date.now(),
 		text: this.refs.message.value.trim(),
-		user: this.props.user
+		user: this.props.username,
+    room: this.props.room
 	});
 
 	this.refs.message.value = "";
@@ -32,21 +33,23 @@ export default class MessageForm extends React.Component {
 
   clearUserTyping = () => {
   	this.props.emit('userTyping', {
-		name: ''
-	});
+  		name: '',
+      room: this.props.room
+  	});
   }
 
   callUserTyping = () => {
   	this.props.emit('userTyping', {
-		name: this.props.user
-	});
+  		name: this.props.username,
+      room: this.props.room
+  	});
   }
 
   render() {
     return (
-		<form onSubmit={this.onSubmit}>
-			<input onKeyUp={this.onKeyUp} type="text" ref="message" placeholder="Please type a message..." className="form-control"/>
-		</form>
+  		<form className="message-form" onSubmit={this.onSubmit}>
+  			<input onKeyUp={this.onKeyUp} type="text" ref="message" placeholder="Please type a message..." className="message-input"/>
+  		</form>
     );
   }
 }

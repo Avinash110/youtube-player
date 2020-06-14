@@ -11,10 +11,13 @@ import UserList from "../Users/UserList/UserList.js";
 import VideoPlayer from "../VideoPlayer/VideoPlayer.js";
 import CreateOrJoinRoom from "../CreateJoinRoom/CreateJoinRoom.js";
 import NavBar from "../NavBar/NavBar.js";
+import ChatRoom from "../ChatRoom/ChatRoom.js";
 
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from '../../theme.js';
 import { GlobalStyles } from "../../global.js";
+
+import { Modal, Input, Button } from 'antd';
 
 const eventToFunctionMapping = [
     { 'event': 'connect', 'function': 'connect' },
@@ -35,10 +38,11 @@ export default class App extends React.Component {
             status: "Disconnected",
             messages: [],
             users: [],
-            user: '',
             userTyping: '',
             room: '',
-            isAdmin: false
+            isAdmin: false,
+            username: '',
+            searchVideos: []
         };
 
         this.socket = io(location.origin);
@@ -65,13 +69,14 @@ export default class App extends React.Component {
     }
 
     stopVideoForAll = () => {
+        console.log("Stop video for all has been called ");
         this.socket.emit('stopVideoForAll', {
             room: this.state.room
         });
     }
 
     stopVideo = () => {
-        this.refs["videoPlayer"].stopVideo();
+        this.refs["videoPlayer"].pauseVideo();
     }
 
     playVideo = (payload) => {
@@ -114,10 +119,6 @@ export default class App extends React.Component {
         this.socket.emit(eventName, payload);
     }
 
-    setUser = (user) => {
-        this.setState({ user: user });
-    }
-
     setVideoDuration = (ct) => {
         this.emit('setVideoDuration', {
             time: ct,
@@ -125,16 +126,25 @@ export default class App extends React.Component {
         });
     }
 
-    render() {
+    handleUsernameSubmit = () => {
+        const username = this.refs.username.input.value.trim();
+        this.emit('setUserName', {
+            name: username
+        });
+        this.setState({
+            username: username 
+        });
+    }
 
-        /*<MessageList 
-                            {...this.state}
-                        />
-                        <span className="current-user-typing">{this.state.userTyping ? this.state.userTyping + " is typing ..." : ""} </span>
-                        <MessageForm
-                            emit={this.emit}
-                            {...this.state}
-                        /> */
+    searchData = (data) => {
+        console.log("setting data:", data);
+        this.setState({
+            searchVideos: data
+        });
+    }
+
+    render() {
+        console.log(this.state.searchVideos);
         return (
             <ThemeProvider theme={this.state.theme == 'light' ? lightTheme : darkTheme}>
                 <GlobalStyles />
@@ -142,7 +152,7 @@ export default class App extends React.Component {
                     theme={this.state.theme}
                     onThemeChange={this.handleChangeTheme}
                     room={this.state.room}
-                    users={this.state.users}
+                    searchData={this.searchData}
                 />
             {
                 !this.state.room ? <CreateOrJoinRoom
@@ -150,13 +160,29 @@ export default class App extends React.Component {
                     joinUserToRoom={this.joinUserToRoom}
                 /> : 
                 <div className="app-container">
+                    <Modal
+                        closable={false}
+                      title="Welcome!"
+                      visible={!this.state.username}
+                      destroyOnClose={true}
+                       footer={[
+                        <Button type="primary" onClick={this.handleUsernameSubmit}>
+                          Ok
+                        </Button>
+                      ]}
+                    >
+                        <label htmlFor="">Enter Your Username</label>
+                        <Input ref="username" onPressEnter={this.handleUsernameSubmit} allowClear type="text" />
+                    </Modal>
                     <VideoPlayer 
                         {...this.state}
                         onPlayVideo={this.playVideoForAll}
                         onStopVideo={this.stopVideoForAll}
                         ref={"videoPlayer"}
                         setVideoDuration={this.setVideoDuration}
+                        searchVideos={this.state.searchVideos}
                     />
+                    <ChatRoom username={this.state.username} room={this.state.room} userTyping={this.state.userTyping} messages={this.state.messages} emit={this.emit} users={this.state.users}/>
                 </div>
             }
             </ThemeProvider>

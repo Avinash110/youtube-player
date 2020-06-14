@@ -1,0 +1,10 @@
+.chat-container {
+	position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.chat-tabs-conatiner {
+	height: 350px;
+	max-height: 350px;
+}

@@ -26,9 +26,13 @@ function randomStr(len) {
 }
 
 if(mode == "development"){
-	app.use(require("webpack-dev-middleware")(compiler, {
-	    noInfo: true, publicPath: webpackConfig.output.publicPath
-	}));
+	const options = {
+	  contentBase: './components',
+	  hot: true,
+	  host: 'localhost',
+	  noInfo: true, publicPath: webpackConfig.output.publicPath
+	};
+	app.use(require("webpack-dev-middleware")(compiler, options));
 
 	app.use(require("webpack-hot-middleware")(compiler));
 }

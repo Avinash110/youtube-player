@@ -144,7 +144,6 @@ export default class App extends React.Component {
     }
 
     render() {
-        console.log(this.state.searchVideos);
         return (
             <ThemeProvider theme={this.state.theme == 'light' ? lightTheme : darkTheme}>
                 <GlobalStyles />

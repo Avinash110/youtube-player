@@ -1,12 +1,22 @@
+const webpack = require('webpack');
 const path = require("path");
 module.exports = {
     entry: [
+        'react-hot-loader/patch',
+        'webpack-hot-middleware/client',
         './public/javascripts/index.js'
     ],
     output: {
         path: path.resolve(__dirname, "public"),
         filename: 'javascripts/bundle.js'
     },
+    plugins: [
+        // OccurrenceOrderPlugin is needed for webpack 1.x only
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+        // Use NoErrorsPlugin for webpack 1.x
+        new webpack.NoEmitOnErrorsPlugin()
+    ],
     mode: "development",
     module: {
         rules: [{
@@ -15,8 +25,11 @@ module.exports = {
                 use: [{
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/react', { 'plugins': ['@babel/plugin-proposal-class-properties'] }]
-                    }
+                        presets: ['@babel/react', { 'plugins': ['@babel/plugin-proposal-class-properties'] } ],
+                        plugins: [
+                          // "react-hot-loader/babel"
+                        ]
+                    },
                 }]
             },
             {
